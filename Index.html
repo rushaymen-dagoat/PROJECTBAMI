@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Happy Birthday Bami!</title>
+    <style>
+        body { margin: 0; background: black; color: #ff69b4; font-family: 'Courier New', Courier, monospace; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+        #canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+        .message-container { text-align: center; z-index: 1; padding: 40px 20px; }
+        h1 { font-size: 3rem; text-shadow: 0 0 10px #ff69b4; display: none; margin-bottom: 20px; }
+        .heart { font-size: 5rem; color: #ff69b4; display: none; margin-bottom: 30px; }
+        
+        /* Styling for the photos */
+        .photo-gallery { display: none; flex-direction: column; align-items: center; gap: 20px; }
+        .photo-gallery img { width: 90%; max-width: 400px; border: 3px solid #ff69b4; border-radius: 15px; box-shadow: 0 0 20px #ff69b4; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="message-container">
+        <div id="countdown" style="font-size: 5rem; margin-top: 40vh;">3</div>
+        <h1 id="bday-text">HAPPY BIRTHDAY BAMI</h1>
+        <div id="heart-icon" class="heart">❤️</div>
+        
+        <div id="gallery" class="photo-gallery">
+            <img src="https://drive.google.com/uc?export=view&id=1YGI4DnhwWcXU5wlZ1fEYqw3ZxD9H0Tm4" alt="Bami 1">
+            <img src="https://drive.google.com/uc?export=view&id=1YSyx0JD4bBHtV1IbLY1d1YIB2-62U_mB" alt="Bami 2">
+            <img src="https://drive.google.com/uc?export=view&id=10c9Iq0NNLthf2T5ATTT-QbsUkrjntb9W" alt="Bami 3">
+        </div>
+    </div>
+
+    <script>
+        // Matrix Effect
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.onresize = resizeCanvas;
+        resizeCanvas();
+
+        const letters = "HAPPYBIRTHDAYBAMI01";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function draw() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ff69b4";
+            ctx.font = fontSize + "px arial";
+            drops.forEach((y, i) => {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(draw, 33);
+
+        // Countdown Logic
+        let count = 3;
+        const timer = setInterval(() => {
+            count--;
+            if (count > 0) {
+                document.getElementById('countdown').innerText = count;
+            } else {
+                clearInterval(timer);
+                document.getElementById('countdown').style.display = 'none';
+                document.getElementById('bday-text').style.display = 'block';
+                document.getElementById('heart-icon').style.display = 'block';
+                document.getElementById('gallery').style.display = 'flex';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
